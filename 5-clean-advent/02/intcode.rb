@@ -65,6 +65,8 @@ class ProgramAlarm
 end
 
 class NounAndVerbFinder
+  attr_reader :noun, :verb
+
   def initialize
     @noun = 0
     @verb = 0
@@ -74,7 +76,7 @@ class NounAndVerbFinder
     @complete = false
     until @complete
       try_two_numbers
-      change_noun_and_verb
+      change_noun_and_verb unless @complete
     end
   end
 
@@ -86,11 +88,11 @@ class NounAndVerbFinder
     result = alarm.state.first
     if result == 19690720
       @complete = true
-      puts "\nA christmas miracle, the noun #{@noun} and verb #{@verb} arbitrarily inserted "\
-           "in positions 1 and 2 results in 19690720 being in the first position after the program has run."
+      puts "\nA christmas miracle, the noun #{@noun} and verb #{@verb} arbitrarily inserted in positions "\
+           "1 and 2 results in 19690720 being in the first position after the program has completed running."
       puts "\n This means your final answer is #{@noun * 100 + @verb}\n____________________________________________________"
-    else
-      puts "Noun: #{@noun.to_s.rjust(2)} - Verb: #{@verb.to_s.rjust(2)} - Result: #{result}"
+    # else
+      # puts "Noun: #{@noun.to_s.rjust(2)} - Verb: #{@verb.to_s.rjust(2)} - Result: #{result}"
     end
   end
 
@@ -109,7 +111,7 @@ end
 # # p alarm.state
 # puts "Final number in position 0 : #{alarm.state.first}"
 
-start_time = Time.now
-finder = NounAndVerbFinder.new
-finder.run
-puts "This inefficient program took #{Time.now - start_time} seconds to run."
+# start_time = Time.now
+# finder = NounAndVerbFinder.new
+# finder.run
+# puts "This inefficient program took #{Time.now - start_time} seconds to run."
