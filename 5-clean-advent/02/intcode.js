@@ -1,7 +1,4 @@
-import { readFileSync } from "fs";
-
-const fileToString = (filePath) => readFileSync(filePath).toString();
-const stringIntoArrayOfLines = (string) => string.split("\n");
+import { fileToString, commaSeparatedStringIntoArrayOfInts } from "../utils/readFile.js";
 
 const getNumbers = (ints, opCodePosition) => {
   const posOne = ints[opCodePosition + 1];
@@ -42,8 +39,29 @@ const runIntCode = (ints) => {
   return ints[0];
 }
 
-let ints = fileToString("./data.txt");
-ints = ints.split(",").map(char => parseInt(char, 10));
-console.log(ints);
+const findNounAndVerb = (targetResult) => {
+  const intsString = fileToString("./data.txt");
+  const intsOriginal = intsString.split(",").map(char => parseInt(char, 10))
+  for (let noun = 0 ; noun < 99 ; noun += 1)
+  {
+    for (let verb = 0 ; verb < 99 ; verb += 1)
+    {
+      const intsCopy = [...intsOriginal];
+      const ints = changeNounAndVerb(intsCopy, noun, verb);
+      const result = runIntCode(ints)
+      if (result === targetResult)
+      {
+        return noun * 100 + verb
+      }
+    }
+  }
+}
 
-export { changeNounAndVerb, runIntCode };
+// const intsString = fileToString("./data.txt");
+// const ints = commaSeparatedStringIntoArrayOfInts(intsString);
+
+// console.log(runIntCode(changeNounAndVerb(ints, 12, 2)))
+
+// console.log(findNounAndVerb(19690720));
+
+export { changeNounAndVerb, runIntCode, findNounAndVerb };
