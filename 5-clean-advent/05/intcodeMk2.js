@@ -13,19 +13,19 @@ const parseOpcode = (int) => {
 
 const getNumbers = (ints, opCodePosition, parameterModes = []) => {
   const parameterOne = ints[opCodePosition + 1];
-  const numOne = parameterModes[0] == 1 ? parameterOne : ints[parameterOne];
+  const numOne = parameterModes[0] === 1 ? parameterOne : ints[parameterOne];
   const parameterTwo = ints[opCodePosition + 2];
-  const numTwo = parameterModes[1] == 1 ? parameterTwo : ints[parameterTwo];
+  const numTwo = parameterModes[1] === 1 ? parameterTwo : ints[parameterTwo];
   return [numOne, numTwo];
 }
 
 const runIntCode = (ints) => {
   let opCodePosition = 0;
   let running = true;
-  let lastOutput = 1;
+  let lastOutput = 1; // change?
   while (running) {
     const opCodeDetails = parseOpcode(ints[opCodePosition]);
-    const opCode = opCodeDetails["opcode"];
+    const opCode = opCodeDetails["opcode"]; // return two values
     const parameterModes = opCodeDetails["parameter modes"];
     if (opCode === 99) {
       running = false;
@@ -33,16 +33,9 @@ const runIntCode = (ints) => {
     }
     let numbers, result, insertPosition;
     switch (opCode) {
-      case 1:
+      case 1: case 2:
         numbers = getNumbers(ints, opCodePosition, parameterModes);
-        result = numbers.reduce((a,b) => a + b);
-        insertPosition = ints[opCodePosition + 3];
-        ints[insertPosition] = result;
-        opCodePosition += 4;
-        break;
-      case 2:
-        numbers = getNumbers(ints, opCodePosition, parameterModes);
-        result = numbers.reduce((a,b) => a * b);
+        result = opCode === 1 ? numbers.reduce((a,b) => a + b) : numbers.reduce((a,b) => a * b);
         insertPosition = ints[opCodePosition + 3];
         ints[insertPosition] = result;
         opCodePosition += 4;
@@ -51,7 +44,6 @@ const runIntCode = (ints) => {
         insertPosition = ints[opCodePosition + 1];
         ints[insertPosition] = lastOutput;
         opCodePosition += 2;
-        console.log("used an output");
         break;
       case 4:
         const parameter = ints[opCodePosition + 1];
@@ -68,4 +60,3 @@ const intsString = fileToString("./data.txt");
 const ints = commaSeparatedStringIntoArrayOfInts(intsString);
 
 var output = runIntCode(ints)
-console.log(`----\n\n${output}\n\n----`)
