@@ -59,4 +59,4 @@ const runIntCode = (ints) => {
 const intsString = fileToString("./data.txt");
 const ints = commaSeparatedStringIntoArrayOfInts(intsString);
 
-var output = runIntCode(ints)
+runIntCode(ints)
