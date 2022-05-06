@@ -1,12 +1,16 @@
-import { fileToString, commaSeparatedStringIntoArrayOfInts as commaSeparatedStringToArrayOfInts } from "../utils/readFile.js";
+import { fileToString, commaSeparatedStringToArrayOfInts } from "../utils/readFile.js";
 import { Runner } from "../intcodeRunner/intcodeRunner.js";
-import { changeNounAndVerb } from "./intcode.js";
 
 const intsString = fileToString("./data.txt");
 
 // Part 1
 
 let ints = commaSeparatedStringToArrayOfInts(intsString);
+
+const changeNounAndVerb = (ints, noun, verb) => {
+  ints.splice(1, 2, noun, verb);
+  return ints;
+}
 
 ints = changeNounAndVerb(ints, 12, 2);
 

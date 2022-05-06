@@ -1,4 +1,4 @@
-import { fileToString, commaSeparatedStringIntoArrayOfInts } from "../utils/readFile.js";
+import { fileToString, commaSeparatedStringToArrayOfInts } from "../utils/readFile.js";
 import { Runner } from "../intcodeRunner/intcodeRunner.js";
 
 const intsString = fileToString("./data.txt");
@@ -7,7 +7,7 @@ const intsString = fileToString("./data.txt");
 
 console.log("Part 1:")
 
-const intsPartOne = commaSeparatedStringIntoArrayOfInts(intsString);
+const intsPartOne = commaSeparatedStringToArrayOfInts(intsString);
 const runnerPartOne = new Runner(intsPartOne, 1);
 runnerPartOne.run();
 
@@ -15,6 +15,6 @@ runnerPartOne.run();
 
 console.log("Part 2:")
 
-const intsPartTwo = commaSeparatedStringIntoArrayOfInts(intsString);
+const intsPartTwo = commaSeparatedStringToArrayOfInts(intsString);
 const runnerPartTwo = new Runner(intsPartTwo, 5);
 runnerPartTwo.run();
