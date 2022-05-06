@@ -9,66 +9,97 @@ class Runner {
     let running = true;
     while (running) {
       const [opcode, parameterModes] = this.parseOpcode();
-      let parameters, result, insertPosition;
       switch (opcode) {
         case 99:
           running = false;
           break;
-          case 1:
-            parameters = this.getParameters(parameterModes);
-            result = parameters.reduce((a, b) => a + b);
-            insertPosition = this.intsArray[this.opCodePosition + 3];
-          this.intsArray[insertPosition] = result;
-          this.opCodePosition += 4;
+        case 1:
+          this.performAddition(parameterModes);
           break;
         case 2:
-          parameters = this.getParameters(parameterModes);
-          result = parameters.reduce((a, b) => a * b);
-          insertPosition = this.intsArray[this.opCodePosition + 3];
-          this.intsArray[insertPosition] = result;
-          this.opCodePosition += 4;
+          this.performMultiplication(parameterModes);
           break;
         case 3:
-          insertPosition = this.intsArray[this.opCodePosition + 1];
-          this.intsArray[insertPosition] = this.input;
-          this.opCodePosition += 2;
+          this.insertInput();
           break;
         case 4:
-          const parameter = this.intsArray[this.opCodePosition + 1];
-          const output = parameterModes[0] === 1 ? parameter : this.intsArray[parameter];
-          console.log(output);
-          this.opCodePosition += 2;
+          this.printOutput(parameterModes);
           break;
         case 5:
-          parameters = this.getParameters(parameterModes);
-          if (parameters[0] !== 0) {
-            this.opCodePosition = parameters[1];
-          } else {
-            this.opCodePosition += 3;
-          }
+          this.jumpIfTrue(parameterModes);
           break;
         case 6:
-          parameters = this.getParameters(parameterModes);
-          if (parameters[0] === 0) {
-            this.opCodePosition = parameters[1];
-          } else {
-            this.opCodePosition += 3;
-          }
+          this.jumpIfFalse(parameterModes);
           break;
         case 7:
-          parameters = this.getParameters(parameterModes);
-          insertPosition = this.intsArray[this.opCodePosition + 3];
-          this.intsArray[insertPosition] = (parameters[0] < parameters[1]) ? 1 : 0;
-          this.opCodePosition += 4;
+          this.insertOneIfLessThan(parameterModes);
           break;
         case 8:
-          parameters = this.getParameters(parameterModes);
-          insertPosition = this.intsArray[this.opCodePosition + 3];
-          this.intsArray[insertPosition] = (parameters[0] === parameters[1]) ? 1 : 0;
-          this.opCodePosition += 4;
+          this.insertOneIfEqual(parameterModes);
           break;
       }
     }
+  }
+
+  performAddition = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    const result = parameters.reduce((a, b) => a + b);
+    const insertPosition = this.intsArray[this.opCodePosition + 3];
+    this.intsArray[insertPosition] = result;
+    this.opCodePosition += 4;
+  }
+
+  performMultiplication = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    const result = parameters.reduce((a, b) => a * b);
+    const insertPosition = this.intsArray[this.opCodePosition + 3];
+    this.intsArray[insertPosition] = result;
+    this.opCodePosition += 4;
+  }
+
+  insertInput = () => {
+    const insertPosition = this.intsArray[this.opCodePosition + 1];
+    this.intsArray[insertPosition] = this.input;
+    this.opCodePosition += 2;
+  }
+
+  printOutput = (parameterModes) => {
+    const parameter = this.intsArray[this.opCodePosition + 1];
+    const output = parameterModes[0] === 1 ? parameter : this.intsArray[parameter];
+    console.log(output);
+    this.opCodePosition += 2;
+  }
+
+  jumpIfTrue = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    if (parameters[0] !== 0) {
+      this.opCodePosition = parameters[1];
+    } else {
+      this.opCodePosition += 3;
+    }
+  }
+
+  jumpIfFalse = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    if (parameters[0] === 0) {
+      this.opCodePosition = parameters[1];
+    } else {
+      this.opCodePosition += 3;
+    }
+  }
+
+  insertOneIfLessThan = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    const insertPosition = this.intsArray[this.opCodePosition + 3];
+    this.intsArray[insertPosition] = (parameters[0] < parameters[1]) ? 1 : 0;
+    this.opCodePosition += 4;
+  }
+  
+  insertOneIfEqual = (parameterModes) => {
+    const parameters = this.getParameters(parameterModes);
+    const insertPosition = this.intsArray[this.opCodePosition + 3];
+    this.intsArray[insertPosition] = (parameters[0] === parameters[1]) ? 1 : 0;
+    this.opCodePosition += 4;    
   }
 
   parseOpcode = () => {
