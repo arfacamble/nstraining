@@ -1,8 +1,8 @@
 class Runner {
-  constructor(intsArray, input) {
+  constructor(intsArray, inputs) {
     this.intsArray = intsArray;
     this.opCodePosition = 0;
-    this.input = input;
+    this.inputs = inputs;
   }
 
   run = () => {
@@ -60,7 +60,7 @@ class Runner {
 
   insertInput = () => {
     const insertPosition = this.intsArray[this.opCodePosition + 1];
-    this.intsArray[insertPosition] = this.input;
+    this.intsArray[insertPosition] = this.inputs.shift();
     this.opCodePosition += 2;
   }
 

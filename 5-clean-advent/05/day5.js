@@ -8,7 +8,7 @@ const intsString = fileToString("./data.txt");
 console.log("Part 1:")
 
 const intsPartOne = commaSeparatedStringToArrayOfInts(intsString);
-const runnerPartOne = new Runner(intsPartOne, 1);
+const runnerPartOne = new Runner(intsPartOne, [1]);
 console.log(runnerPartOne.run());
 
 // part 2
@@ -16,5 +16,5 @@ console.log(runnerPartOne.run());
 console.log("Part 2:")
 
 const intsPartTwo = commaSeparatedStringToArrayOfInts(intsString);
-const runnerPartTwo = new Runner(intsPartTwo, 5);
+const runnerPartTwo = new Runner(intsPartTwo, [5]);
 console.log(runnerPartTwo.run());
