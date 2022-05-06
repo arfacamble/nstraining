@@ -23,7 +23,8 @@ class Runner {
           this.insertInput();
           break;
         case 4:
-          this.printOutput(parameterModes);
+          const output = this.getOutput(parameterModes);
+          if (output !== 0) return output;
           break;
         case 5:
           this.jumpIfTrue(parameterModes);
@@ -63,11 +64,11 @@ class Runner {
     this.opCodePosition += 2;
   }
 
-  printOutput = (parameterModes) => {
+  getOutput = (parameterModes) => {
     const parameter = this.intsArray[this.opCodePosition + 1];
     const output = parameterModes[0] === 1 ? parameter : this.intsArray[parameter];
-    console.log(output);
     this.opCodePosition += 2;
+    return output;
   }
 
   jumpIfTrue = (parameterModes) => {
